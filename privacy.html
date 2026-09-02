@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Lista+</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#ffffff; --text:#0f172a; --muted:#475569;
+    --rule:#e2e8f0; --accent:#047857; --amber:#b45309;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0b1220; --surface:#0f172a; --text:#e2e8f0; --muted:#94a3b8;
+           --rule:#1e293b; --accent:#34d399; --amber:#fbbf24; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 72px}
+  .accent{height:3px;background:linear-gradient(90deg,var(--accent),var(--amber));margin-bottom:28px}
+  h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:19px;margin:38px 0 10px;padding-top:16px;border-top:1px solid var(--rule)}
+  h3{font-size:16px;margin:22px 0 6px}
+  .sub{color:var(--muted);margin:0 0 4px}
+  .date{color:var(--muted);font-size:14px;margin:0 0 8px}
+  ul{padding-left:20px}
+  li{margin:5px 0}
+  a{color:var(--accent)}
+  .box{border:1px solid var(--rule);padding:16px 18px;margin:20px 0;background:var(--surface)}
+  .box.warn{border-left:3px solid var(--amber)}
+  .box.strong{border-left:3px solid var(--accent)}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+  th,td{border:1px solid var(--rule);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--surface);font-weight:600}
+  .scroll{overflow-x:auto}
+  code{background:var(--surface);border:1px solid var(--rule);padding:1px 5px;font-size:14px}
+  .back{display:inline-block;margin-bottom:18px;font-size:14px;text-decoration:none}
+  .back:hover{text-decoration:underline}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="accent"></div>
+
+<a class="back" href="./">&larr; Back to Lista+</a>
+
+<h1>Privacy Policy</h1>
+<p class="sub">Lista+ (<code>com.jorres.listaplus</code>) — a utang ledger for small shops</p>
+<p class="date">Effective 26 August 2026 · Last updated 26 August 2026</p>
+
+<p>Lista+ helps a shop owner keep a record of credit (<em>utang</em>) extended to their
+customers. This policy explains what the app stores, what leaves your phone, and what
+never does.</p>
+
+<div class="box strong">
+<strong>The short version.</strong> Lista+ works entirely offline and keeps your ledger on
+your own phone. Nothing is uploaded unless you sign in and turn on cloud backup. There is
+no analytics, no advertising, no tracking, and your data is never sold or shared with
+anyone for their own purposes.
+</div>
+
+<h2>1. Two kinds of people in this app</h2>
+<p>This matters more here than in most apps, so it comes first.</p>
+<ul>
+<li><strong>You, the shop owner.</strong> You install and use Lista+. You may create a
+cloud account.</li>
+<li><strong>Your customers.</strong> They do not use the app and never installed it. You
+record details about them so you can remember who owes what.</li>
+</ul>
+
+<div class="box warn">
+<strong>Your responsibility as the person entering that information.</strong> When you
+record a customer's name, phone number, address, or notes, you are handling another
+person's personal information. Under the Philippine Data Privacy Act of 2012 (RA 10173),
+you are the one who decides what to collect, so you are responsible for telling your
+customers that you keep this record, using it only for your ledger, and correcting or
+removing it when they ask. Lista+ gives you the tools; it cannot obtain their consent for
+you. A good practice is simply telling people, "I'll save your name and number in my
+ledger app so I can track your utang."
+</div>
+
+<h2>2. What Lista+ stores on your phone</h2>
+<p>Everything below lives in a database on your device and is the authoritative copy. The
+app is offline-first: it works with no internet connection at all.</p>
+<div class="scroll">
+<table>
+<tr><th>What</th><th>Details</th></tr>
+<tr><td>Your owner account</td><td>Username and store name. Your password is never stored
+as text — only a salted PBKDF2 hash, which cannot be reversed back into your password.</td></tr>
+<tr><td>Customers</td><td>Full name, nickname, phone number, address, credit limit, and any
+free-text notes you write.</td></tr>
+<tr><td>Products</td><td>Item names, prices, categories, availability.</td></tr>
+<tr><td>Credit transactions</td><td>Each utang, its line items, amounts and dates.</td></tr>
+<tr><td>Payments</td><td>Payments received and how they were applied to outstanding credit.</td></tr>
+<tr><td>Activity log</td><td>A local history of actions taken in the app.</td></tr>
+<tr><td>Settings</td><td>Language, theme, and whether app lock is enabled.</td></tr>
+</table>
+</div>
+<p>Sign-in tokens and your Premium status are held in encrypted storage provided by
+Android, separate from the ledger itself.</p>
+
+<h2>3. What leaves your phone, and when</h2>
+<p><strong>Nothing leaves your phone until you sign in with Google and cloud backup is
+active.</strong> If you never sign in, Lista+ makes no network requests carrying your data
+and this entire section does not apply to you.</p>
+
+<h3>If you do enable cloud backup</h3>
+<p>These records are copied to our server so they can be restored or used on another
+device:</p>
+<ul>
+<li>Customers — <strong>including their names, phone numbers, addresses and notes</strong></li>
+<li>Products</li>
+<li>Credit transactions and their line items</li>
+<li>Payments and their allocations</li>
+</ul>
+<p>We also store the email address and account identifier that Google provides when you
+sign in, so we know which ledger is yours, plus whether your account has Premium.</p>
+<p>Your <strong>local owner password is never uploaded</strong> — not even as a hash. It
+stays on the device.</p>
+
+<h2>4. What Lista+ does not do</h2>
+<ul>
+<li><strong>No analytics or tracking of any kind.</strong> The app contains no analytics,
+crash-reporting, advertising or attribution software.</li>
+<li><strong>No advertising</strong>, and no advertising identifier is collected.</li>
+<li><strong>We never sell your data</strong>, and never share it with third parties for
+their own purposes.</li>
+<li><strong>No access to your phone's contacts, messages, call log, camera, microphone,
+files, or location.</strong> The app requests only two permissions: internet access and
+network-status. When you tap to call or text a customer, Android's own phone or messaging
+app opens with the number filled in — Lista+ never reads your contacts and never sends
+anything itself.</li>
+<li><strong>Biometrics never leave your device.</strong> If you enable app lock, Android
+performs the check; Lista+ only receives a yes or no and never sees your fingerprint or
+face data.</li>
+</ul>
+
+<h2>5. Who else is involved</h2>
+<div class="scroll">
+<table>
+<tr><th>Service</th><th>Why</th><th>What it handles</th></tr>
+<tr><td>Google Sign-In</td><td>To identify your cloud account</td><td>Your email address and
+Google account identifier</td></tr>
+<tr><td>Our backup server (hosted on Render, Singapore region)</td><td>To run the sync
+service</td><td>The records listed in section 3, in transit and at rest</td></tr>
+<tr><td>MongoDB Atlas</td><td>To store the backed-up records</td><td>The records listed in
+section 3</td></tr>
+<tr><td>Google Play Billing</td><td>Only if you purchase Premium</td><td>The purchase
+itself. We never see your card or payment details.</td></tr>
+</table>
+</div>
+<p>These providers process data on our instructions in order to run the service. They are
+not permitted to use it for their own purposes. Because our server and database are hosted
+in Singapore, backed-up data is stored outside the Philippines.</p>
+
+<h2>6. Security</h2>
+<ul>
+<li>All network traffic uses HTTPS.</li>
+<li>Your owner password is stored only as a salted PBKDF2 hash.</li>
+<li>Sign-in tokens and Premium status are kept in Android's encrypted storage.</li>
+<li>Optional app lock uses your device fingerprint, face or screen lock.</li>
+<li>Credentials are excluded from Android's automatic cloud backup so they do not leak into
+unrelated storage.</li>
+</ul>
+<p>No system is perfectly secure, and we cannot guarantee absolute security. If your phone
+is lost or shared, anyone who can unlock it may be able to open your ledger — enabling app
+lock is the best protection available in the app.</p>
+
+<h2>7. How long data is kept</h2>
+<p>Data on your phone stays until you delete it or uninstall the app. Uninstalling removes
+the local ledger permanently; if you have not enabled cloud backup, that copy cannot be
+recovered by anyone, including us.</p>
+<p>Backed-up data is kept until you delete your cloud account. See
+<a href="delete-account.html">Account &amp; Data Deletion</a> for how to do that and what
+happens.</p>
+
+<h2>8. Your rights</h2>
+<p>Under the Data Privacy Act of 2012 you may ask to access, correct, or delete personal
+information we hold about you, object to its processing, or obtain a copy. The in-app
+tools let you do most of this yourself: edit or delete any customer at any time, and delete
+your cloud account outright. For anything else, contact us below.</p>
+<p>If you believe your rights have been violated, you may complain to the National Privacy
+Commission (<a href="https://www.privacy.gov.ph">privacy.gov.ph</a>).</p>
+
+<h2>9. Children</h2>
+<p>Lista+ is a business record-keeping tool intended for shop owners and is not directed at
+children. We do not knowingly collect personal information from children.</p>
+
+<h2>10. Changes to this policy</h2>
+<p>If this policy changes, the "last updated" date above changes with it. Significant
+changes will be noted in the app or on this page.</p>
+
+<h2>11. Contact</h2>
+<p>Questions about this policy, or requests concerning your data:</p>
+<p><strong><a href="mailto:devteam0309@gmail.com">devteam0309@gmail.com</a></strong><br>
+Lista+ · Jorres · Philippines</p>
+
+<footer>
+Lista+ is a record-keeping tool for tracking credit a shop has already extended. It is not
+a lender, does not provide credit or financial services, and does not process payments
+between you and your customers.
+</footer>
+</div>
+</body>
+</html>

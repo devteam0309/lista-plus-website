@@ -4,9 +4,11 @@ Single-page marketing site for the **Lista+** Android app (`com.jorres.listaplus
 Static HTML, no build step, no dependencies.
 
 ```
-index.html      the whole site, including all four policy modals
-assets/         logos and screenshots
-.nojekyll       harmless on Netlify; keeps GitHub Pages from processing the files
+index.html            the site, including all four policy modals
+privacy.html          plain policy page — this is what Google Play points at
+delete-account.html   plain deletion page — this is what Google Play points at
+assets/               logos and screenshots
+.nojekyll             harmless on Netlify; keeps GitHub Pages from processing the files
 ```
 
 ## Deploying (Netlify)
@@ -33,11 +35,20 @@ directly by URL, which is what an external link needs:
 /#legal
 ```
 
-> ⚠️ **Do not give these URLs to Google Play.** A modal needs JavaScript and a click
-> before the text appears, and a reviewer following a link expects the policy rendered
-> immediately. Play must point at a **plain page that renders the policy on load** — the
-> separately hosted policy pages serve that purpose and remain the review-facing copies.
-> The modals here are the same content presented for humans browsing the site.
+> ⚠️ **Do not give these fragment URLs to Google Play.** A modal needs JavaScript and a
+> click before the text appears, and a reviewer following a link expects the policy
+> rendered immediately.
+>
+> Point Play at the plain pages in this repo instead — they contain no JavaScript at all
+> and render on load:
+>
+> ```
+> /privacy.html          → App content > Privacy policy, and the Store listing
+> /delete-account.html   → App content > Data safety > Data deletion
+> ```
+>
+> When filling in Data safety, also tick that an in-app deletion path exists
+> (More → Account → Delete cloud account). Having both is the strongest answer.
 
 ## Keeping the copy honest
 
@@ -46,11 +57,12 @@ PBKDF2 password hashing, data hosted in Singapore, and precisely which entities 
 up. **There are now three copies of this content:**
 
 1. `docs/` in the app repo (source)
-2. the separately hosted plain policy pages (canonical, what Play sees)
-3. the modals in `index.html` (this repo)
+2. `privacy.html` + `delete-account.html` here (canonical — what Play sees)
+3. the modals in `index.html` (same content, presented for people browsing the site)
 
 If the app's behaviour changes, update **all three** and bump the "last updated" date. An
 inaccurate privacy policy is a policy violation in itself, not merely stale documentation.
+Copies 2 and 3 live in this repo, so at least they move in one commit.
 
 ## Messaging
 

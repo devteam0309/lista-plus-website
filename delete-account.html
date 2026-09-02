@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account &amp; Data Deletion — Lista+</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#ffffff; --text:#0f172a; --muted:#475569;
+    --rule:#e2e8f0; --accent:#047857; --amber:#b45309; --danger:#b91c1c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0b1220; --surface:#0f172a; --text:#e2e8f0; --muted:#94a3b8;
+           --rule:#1e293b; --accent:#34d399; --amber:#fbbf24; --danger:#f87171; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 72px}
+  .accent{height:3px;background:linear-gradient(90deg,var(--accent),var(--amber));margin-bottom:28px}
+  h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:19px;margin:38px 0 10px;padding-top:16px;border-top:1px solid var(--rule)}
+  .sub{color:var(--muted);margin:0 0 4px}
+  .date{color:var(--muted);font-size:14px;margin:0 0 8px}
+  ul,ol{padding-left:20px}
+  li{margin:6px 0}
+  a{color:var(--accent)}
+  .box{border:1px solid var(--rule);padding:16px 18px;margin:20px 0;background:var(--surface)}
+  .box.warn{border-left:3px solid var(--amber)}
+  .box.keep{border-left:3px solid var(--accent)}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+  th,td{border:1px solid var(--rule);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--surface);font-weight:600}
+  .scroll{overflow-x:auto}
+  code{background:var(--surface);border:1px solid var(--rule);padding:1px 5px;font-size:14px}
+  .path{font-weight:600}
+  .back{display:inline-block;margin-bottom:18px;font-size:14px;text-decoration:none}
+  .back:hover{text-decoration:underline}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="accent"></div>
+
+<a class="back" href="./">&larr; Back to Lista+</a>
+
+<h1>Account &amp; Data Deletion</h1>
+<p class="sub">Lista+ (<code>com.jorres.listaplus</code>)</p>
+<p class="date">Last updated 26 August 2026</p>
+
+<p>This page explains how to delete your Lista+ cloud account and the data stored with it,
+what gets removed, and what stays.</p>
+
+<div class="box keep">
+<strong>Important distinction.</strong> Lista+ keeps your ledger on your phone and works
+without an account. Deleting your <em>cloud account</em> removes the backup copy on our
+servers. <strong>It does not delete the ledger on your phone</strong> — your records stay
+exactly where they are and the app keeps working offline.
+</div>
+
+<h2>Option 1 — Delete it yourself in the app</h2>
+<p>This is immediate and requires no waiting.</p>
+<ol>
+<li>Open <strong>Lista+</strong>.</li>
+<li>Go to the <span class="path">More</span> tab.</li>
+<li>Find the <span class="path">Account</span> section (visible when you are signed in).</li>
+<li>Tap <span class="path">Delete cloud account</span>.</li>
+<li>Confirm by tapping <span class="path">Delete forever</span>.</li>
+</ol>
+<p>Your account and its backed-up data are erased right away, and you are signed out on
+this device. Any other device still signed in to that account is signed out automatically
+the next time it tries to sync.</p>
+
+<h2>Option 2 — Request deletion by email</h2>
+<p>Use this if you can no longer open the app, have lost the device, or cannot sign in.</p>
+<p>Email <strong><a href="mailto:devteam0309@gmail.com">devteam0309@gmail.com</a></strong> from <strong>the same Google address you
+used to sign in</strong>, with the subject <strong>"Delete my Lista+ account"</strong>.</p>
+<p>We use the sending address to confirm the request is yours, so a request from a
+different address cannot be honoured. Requests are completed within <strong>30 days</strong>
+and normally much sooner.</p>
+
+<h2>What is deleted</h2>
+<div class="scroll">
+<table>
+<tr><th>Deleted permanently from our servers</th></tr>
+<tr><td>Your account record, including the email address and Google account identifier used
+to sign in</td></tr>
+<tr><td>All backed-up customers — names, nicknames, phone numbers, addresses, credit limits
+and notes</td></tr>
+<tr><td>All backed-up products</td></tr>
+<tr><td>All backed-up credit transactions and their line items</td></tr>
+<tr><td>All backed-up payments and their allocations</td></tr>
+<tr><td>Your cloud Premium status</td></tr>
+</table>
+</div>
+<p>Deletion is immediate and permanent. We do not keep an archived copy, and deleted data
+cannot be restored afterwards — by you or by us.</p>
+
+<h2>What is not deleted</h2>
+<ul>
+<li><strong>The ledger on your phone.</strong> It remains fully intact and usable offline.
+To remove it as well, see below.</li>
+<li><strong>A Premium purchase made through Google Play.</strong> You paid for that and it
+is not part of what you asked to delete, so it survives and can be restored. Only
+Premium granted through your cloud account is removed.</li>
+<li><strong>Records of a purchase held by Google Play</strong>, which Google keeps under
+its own policies and we do not control.</li>
+</ul>
+
+<div class="box warn">
+<strong>To delete the ledger on your phone as well</strong>, uninstall Lista+ (or use
+Android <span class="path">Settings → Apps → Lista+ → Storage → Clear data</span>). This is
+irreversible: if you have not backed up, those records cannot be recovered by anyone,
+including us. Delete your cloud account <em>first</em> if you want both gone.
+</div>
+
+<h2>Deleting individual customers instead</h2>
+<p>If you only want to remove one person's information rather than everything, you do not
+need to delete your account. Open the customer in the app and delete them — this removes
+their details along with their credit and payment history, on your phone and from the
+backup. This is the route to use when a customer asks you to remove their information.</p>
+
+<h2>Questions</h2>
+<p>Contact <strong><a href="mailto:devteam0309@gmail.com">devteam0309@gmail.com</a></strong>. See also our
+<a href="privacy.html">Privacy Policy</a>.</p>
+
+<footer>
+Lista+ · Jorres · Philippines
+</footer>
+</div>
+</body>
+</html>
