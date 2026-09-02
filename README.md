@@ -35,14 +35,9 @@ directly by URL, which is what an external link needs:
 
 > ⚠️ **Do not give these URLs to Google Play.** A modal needs JavaScript and a click
 > before the text appears, and a reviewer following a link expects the policy rendered
-> immediately. Play should keep pointing at the plain pages in the **`lista-plus-legal`**
-> repo:
->
-> - `https://devteam0309.github.io/lista-plus-legal/privacy.html`
-> - `https://devteam0309.github.io/lista-plus-legal/delete-account.html`
->
-> Those stay the canonical, review-facing copies. The modals here are the same content
-> presented for humans browsing the site, and each links back to its canonical page.
+> immediately. Play must point at a **plain page that renders the policy on load** — the
+> separately hosted policy pages serve that purpose and remain the review-facing copies.
+> The modals here are the same content presented for humans browsing the site.
 
 ## Keeping the copy honest
 
@@ -51,7 +46,7 @@ PBKDF2 password hashing, data hosted in Singapore, and precisely which entities 
 up. **There are now three copies of this content:**
 
 1. `docs/` in the app repo (source)
-2. the `lista-plus-legal` repo (canonical, what Play sees)
+2. the separately hosted plain policy pages (canonical, what Play sees)
 3. the modals in `index.html` (this repo)
 
 If the app's behaviour changes, update **all three** and bump the "last updated" date. An
