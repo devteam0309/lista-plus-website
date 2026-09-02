@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lista+ — The digital utang ledger for sari-sari stores</title>
+<meta name="description" content="Lista+ is a digital utang notebook for Philippine sari-sari stores. Record credit, log payments, and see every suki's balance — free, offline, English or Tagalog.">
+<link rel="icon" href="assets/icon.png">
+<meta property="og:title" content="Lista+ — The digital utang ledger for sari-sari stores">
+<meta property="og:description" content="Record utang, log bayad, see every suki's balance. Free and fully offline.">
+<meta property="og:image" content="assets/logo-lockup.png">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#ffffff; --panel:#ffffff; --sunken:#f8faf9;
+    --text:#0f172a; --muted:#52616f; --rule:#e2e8f0;
+    --emerald:#047857; --emerald-soft:#ecfdf5; --amber:#b45309; --amber-soft:#fef3c7;
+    --shadow:0 1px 2px rgba(15,23,42,.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b1220; --panel:#0f172a; --sunken:#111c2e;
+      --text:#e6edf5; --muted:#9aa8b8; --rule:#1e293b;
+      --emerald:#34d399; --emerald-soft:#0d2a22; --amber:#fbbf24; --amber-soft:#2a2110;
+      --shadow:none;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:var(--emerald)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* the app's signature emerald-to-amber hairline */
+  .accent{height:3px;background:linear-gradient(90deg,var(--emerald),var(--amber))}
+
+  header{border-bottom:1px solid var(--rule);background:var(--panel)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.4px}
+  .brand img{height:34px;width:34px}
+  .brand span{color:var(--emerald)}
+  .brand span i{color:var(--amber);font-style:normal}
+  nav{display:flex;gap:22px;font-size:15px}
+  nav a{color:var(--muted);text-decoration:none}
+  nav a:hover{color:var(--emerald)}
+  @media (max-width:640px){nav{display:none}}
+
+  .hero{padding:64px 0 56px;text-align:center}
+  /*
+    The logo files carry a white background baked in — they were cut from a
+    flattened JPEG sheet and their interiors contain white and cream, so the
+    background cannot be keyed out without punching holes in the artwork.
+    Presented on a deliberate white plate instead, which reads as designed in
+    dark mode rather than as a stray white box.
+  */
+  .plate{
+    display:inline-block;background:#fff;border:1px solid var(--rule);
+    padding:18px 22px;margin:0 auto 26px;max-width:100%;
+  }
+  .plate img{max-width:520px;width:100%}
+  .hero h1{font-size:clamp(26px,4.4vw,40px);line-height:1.2;margin:0 0 14px;letter-spacing:-.5px}
+  .hero p.lede{font-size:clamp(16px,2.1vw,19px);color:var(--muted);max-width:620px;margin:0 auto 26px}
+  .pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:30px}
+  .pill{
+    border:1px solid var(--rule);background:var(--sunken);color:var(--muted);
+    padding:7px 14px;font-size:14px;font-weight:600;
+  }
+  .pill.on{border-color:var(--emerald);color:var(--emerald);background:var(--emerald-soft)}
+  .note{
+    display:inline-block;border:1px solid var(--rule);border-left:3px solid var(--amber);
+    background:var(--panel);padding:12px 18px;color:var(--muted);font-size:15px;text-align:left;
+  }
+
+  section{padding:56px 0;border-top:1px solid var(--rule)}
+  h2{font-size:clamp(21px,2.8vw,27px);margin:0 0 8px;letter-spacing:-.3px}
+  .sub{color:var(--muted);margin:0 0 30px;max-width:620px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .card{border:1px solid var(--rule);background:var(--panel);padding:22px;box-shadow:var(--shadow)}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--muted);font-size:15px}
+  .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.6px;
+    color:var(--emerald);background:var(--emerald-soft);border:1px solid var(--rule);
+    padding:3px 8px;margin-bottom:12px;
+  }
+
+  .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+  .shots figure{margin:0}
+  .shots img{border:1px solid var(--rule);background:var(--sunken)}
+  .shots figcaption{color:var(--muted);font-size:14px;margin-top:10px;text-align:center}
+
+  .split{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center}
+  @media (max-width:760px){.split{grid-template-columns:1fr}}
+  .split ul{margin:0;padding-left:20px;color:var(--muted)}
+  .split li{margin:7px 0}
+
+  footer{border-top:1px solid var(--rule);background:var(--panel);padding:40px 0 48px}
+  .flinks{display:flex;flex-wrap:wrap;gap:10px 26px;margin:0 0 20px;padding:0;list-style:none}
+  .flinks button{
+    background:none;border:0;padding:0;font:inherit;font-size:15px;
+    color:var(--emerald);cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+  }
+  .fine{color:var(--muted);font-size:14px;margin:0 0 6px}
+
+  /* ---- modals ---- */
+  .modal{
+    position:fixed;inset:0;display:none;z-index:50;
+    background:rgba(15,23,42,.55);padding:24px;overflow-y:auto;
+  }
+  .modal[open],.modal.show{display:block}
+  .sheet{
+    max-width:760px;margin:24px auto;background:var(--bg);border:1px solid var(--rule);
+    position:relative;
+  }
+  .sheet .accent{position:sticky;top:0}
+  .sheet-in{padding:26px 30px 34px}
+  @media (max-width:560px){.sheet-in{padding:20px}}
+  .sheet h2{margin:0 0 4px}
+  .sheet .date{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .sheet h3{font-size:16px;margin:24px 0 8px;padding-top:14px;border-top:1px solid var(--rule)}
+  .sheet p,.sheet li{color:var(--text);font-size:15px}
+  .sheet ul{padding-left:20px}
+  .sheet table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+  .sheet th,.sheet td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}
+  .sheet th{background:var(--sunken);font-weight:600}
+  .scroll{overflow-x:auto}
+  .callout{border:1px solid var(--rule);border-left:3px solid var(--emerald);background:var(--sunken);padding:14px 16px;margin:16px 0}
+  .callout.warn{border-left-color:var(--amber)}
+  .closex{
+    position:absolute;top:14px;right:14px;width:36px;height:36px;
+    border:1px solid var(--rule);background:var(--bg);color:var(--text);
+    font-size:20px;line-height:1;cursor:pointer;
+  }
+  .closex:hover{border-color:var(--emerald);color:var(--emerald)}
+  body.locked{overflow:hidden}
+</style>
+</head>
+<body>
+
+<div class="accent"></div>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">
+      <img src="assets/icon.png" alt="">
+      <span>LISTA<i>+</i></span>
+    </div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#screens">Screens</a>
+      <a href="#premium">Cloud backup</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="plate">
+      <img src="assets/logo-lockup.png" alt="Lista+ — the digital relationship ledger for sari-sari stores">
+    </div>
+    <h1>Ang listahan ng utang, nasa telepono mo na.</h1>
+    <p class="lede">
+      Lista+ is a digital utang notebook for sari-sari store owners. Record who took what,
+      log every bayad, and see each suki's balance at a glance — without ever needing signal.
+    </p>
+    <div class="pills">
+      <span class="pill on">Works fully offline</span>
+      <span class="pill on">Free to use</span>
+      <span class="pill on">English &amp; Tagalog</span>
+      <span class="pill">No ads</span>
+      <span class="pill">No tracking</span>
+    </div>
+    <p class="note">
+      <strong>Coming soon to Google Play.</strong> Lista+ is in testing right now.
+      Want to try it early and help shape it? <a href="mailto:devteam0309@gmail.com?subject=Lista%2B%20tester">Email us</a>.
+    </p>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Everything a tindera actually needs</h2>
+      <p class="sub">Built around how a sari-sari store really runs — not a point-of-sale system pretending to be one.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">SUKI</span>
+          <h3>Know who owes you</h3>
+          <p>Save each customer with a nickname, number and credit limit. See every balance at a glance, and get a warning before someone goes past their limit.</p>
+        </div>
+        <div class="card">
+          <span class="tag">UTANG</span>
+          <h3>Record credit in seconds</h3>
+          <p>Build a basket from your saved products or type a custom item. Quantities and prices total up as you go.</p>
+        </div>
+        <div class="card">
+          <span class="tag">BAYAD</span>
+          <h3>Payments that add up</h3>
+          <p>Take full or partial payments. Each one is applied to the oldest utang first, automatically, so balances are always computed — never guessed.</p>
+        </div>
+        <div class="card">
+          <span class="tag">OFFLINE</span>
+          <h3>No signal, no problem</h3>
+          <p>Your ledger lives on your own phone. Every feature works with no internet at all, and there is no account to create before you start.</p>
+        </div>
+        <div class="card">
+          <span class="tag">REPORTS</span>
+          <h3>Printable PDF reports</h3>
+          <p>Customer statements, outstanding accounts, collections and monthly summaries — shareable through Messenger or email, or printed.</p>
+        </div>
+        <div class="card">
+          <span class="tag">PRIVATE</span>
+          <h3>Yours alone</h3>
+          <p>No ads, no analytics, no tracking. Only two permissions, and an optional app lock using your fingerprint or screen lock.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <h2>A look inside</h2>
+      <p class="sub">Clean, flat and readable — designed to be glanced at across a counter.</p>
+      <div class="shots">
+        <figure><img src="assets/shot-dashboard.png" alt="Dashboard showing total outstanding and this week's collections" loading="lazy"><figcaption>Dashboard</figcaption></figure>
+        <figure><img src="assets/shot-customers.png" alt="Customer list with balances and status" loading="lazy"><figcaption>Your suki</figcaption></figure>
+        <figure><img src="assets/shot-new-credit.png" alt="Recording a new credit with line items" loading="lazy"><figcaption>New utang</figcaption></figure>
+        <figure><img src="assets/shot-payment.png" alt="Receiving a payment against outstanding credit" loading="lazy"><figcaption>Receive bayad</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="premium">
+    <div class="wrap split">
+      <div>
+        <h2>Optional cloud backup</h2>
+        <p class="sub">Lista+ is free and complete without an account. If you want a safety net, Premium adds one.</p>
+        <ul>
+          <li>Back up your ledger and restore it on a new phone</li>
+          <li>A one-time payment, not a subscription</li>
+          <li>Sign in with Google — nothing uploads until you do</li>
+          <li>Everything else stays free and fully offline, forever</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">IMPORTANT</span>
+        <h3>Lista+ is not a lending app</h3>
+        <p>
+          It is a record-keeping tool for credit a store has <em>already</em> given to its
+          own customers. Lista+ does not lend money, does not process payments between you
+          and your suki, and is not a financial service.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <ul class="flinks">
+      <li><button type="button" data-modal="m-privacy">Privacy Policy</button></li>
+      <li><button type="button" data-modal="m-data">Data Collection Statement</button></li>
+      <li><button type="button" data-modal="m-delete">Deleting Your Account</button></li>
+      <li><button type="button" data-modal="m-legal">Legal &amp; Terms</button></li>
+    </ul>
+    <p class="fine">Questions or requests about your data: <a href="mailto:devteam0309@gmail.com">devteam0309@gmail.com</a></p>
+    <p class="fine">Lista+ · Jorres · Philippines · <code>com.jorres.listaplus</code></p>
+    <p class="fine">
+      Lista+ is a record-keeping tool for tracking credit a shop has already extended. It is
+      not a lender, does not provide credit or financial services, and does not process
+      payments between a shop and its customers.
+    </p>
+  </div>
+</footer>
+
+<!-- ============================ MODALS ============================ -->
+
+<div class="modal" id="m-privacy" role="dialog" aria-modal="true" aria-labelledby="h-privacy">
+  <div class="sheet">
+    <div class="accent"></div>
+    <button class="closex" type="button" data-close aria-label="Close">×</button>
+    <div class="sheet-in">
+      <h2 id="h-privacy">Privacy Policy</h2>
+      <p class="date">Effective 26 August 2026 · Last updated 26 August 2026</p>
+
+      <div class="callout">
+        <strong>The short version.</strong> Lista+ works entirely offline and keeps your
+        ledger on your own phone. Nothing is uploaded unless you sign in and turn on cloud
+        backup. There is no analytics, no advertising, no tracking, and your data is never
+        sold or shared with anyone for their own purposes.
+      </div>
+
+      <h3>1. Two kinds of people in this app</h3>
+      <ul>
+        <li><strong>You, the shop owner.</strong> You install and use Lista+, and you may create a cloud account.</li>
+        <li><strong>Your customers.</strong> They never installed the app. You record details about them so you can remember who owes what.</li>
+      </ul>
+      <div class="callout warn">
+        <strong>Your responsibility as the person entering that information.</strong> When you
+        record a customer's name, phone number, address or notes, you are handling another
+        person's personal information. Under the Philippine Data Privacy Act of 2012
+        (RA 10173) you decide what to collect, so you are responsible for telling your
+        customers that you keep this record, using it only for your ledger, and correcting or
+        removing it when they ask. Lista+ gives you the tools; it cannot obtain their consent
+        for you.
+      </div>
+
+      <h3>2. What Lista+ stores on your phone</h3>
+      <div class="scroll">
+        <table>
+          <tr><th>What</th><th>Details</th></tr>
+          <tr><td>Your owner account</td><td>Username and store name. Your password is never stored as text — only a salted PBKDF2 hash, which cannot be reversed.</td></tr>
+          <tr><td>Customers</td><td>Full name, nickname, phone number, address, credit limit and any notes you write.</td></tr>
+          <tr><td>Products</td><td>Item names, prices, categories, availability.</td></tr>
+          <tr><td>Credit transactions</td><td>Each utang, its line items, amounts and dates.</td></tr>
+          <tr><td>Payments</td><td>Payments received and how they were applied.</td></tr>
+          <tr><td>Activity log</td><td>A local history of actions taken in the app.</td></tr>
+          <tr><td>Settings</td><td>Language, theme, and whether app lock is enabled.</td></tr>
+        </table>
+      </div>
+      <p>Sign-in tokens and Premium status are held in encrypted storage provided by Android, separate from the ledger itself.</p>
+
+      <h3>3. What leaves your phone, and when</h3>
+      <p><strong>Nothing leaves your phone until you sign in with Google and cloud backup is active.</strong> If you never sign in, Lista+ makes no network requests carrying your data and this section does not apply to you.</p>
+      <p>If you do enable cloud backup, these are copied to our server so they can be restored or used on another device: customers (<strong>including names, phone numbers, addresses and notes</strong>), products, credit transactions and their line items, and payments and their allocations. We also store the email address and account identifier Google provides at sign-in, plus whether your account has Premium.</p>
+      <p><strong>Your local owner password is never uploaded</strong> — not even as a hash.</p>
+
+      <h3>4. What Lista+ does not do</h3>
+      <ul>
+        <li><strong>No analytics or tracking of any kind.</strong> No analytics, crash-reporting, advertising or attribution software.</li>
+        <li><strong>No advertising</strong>, and no advertising identifier is collected.</li>
+        <li><strong>We never sell your data</strong>, and never share it with third parties for their own purposes.</li>
+        <li><strong>No access to contacts, messages, call log, camera, microphone, files or location.</strong> The app requests only two permissions: internet and network status. Tapping to call or text a customer opens Android's own app with the number filled in.</li>
+        <li><strong>Biometrics never leave your device.</strong> Android performs the check; Lista+ only receives a yes or no.</li>
+      </ul>
+
+      <h3>5. Who else is involved</h3>
+      <div class="scroll">
+        <table>
+          <tr><th>Service</th><th>Why</th><th>What it handles</th></tr>
+          <tr><td>Google Sign-In</td><td>To identify your cloud account</td><td>Your email address and Google account identifier</td></tr>
+          <tr><td>Our backup server (Render, Singapore region)</td><td>To run the sync service</td><td>The records listed in section 3</td></tr>
+          <tr><td>MongoDB Atlas</td><td>To store the backed-up records</td><td>The records listed in section 3</td></tr>
+          <tr><td>Google Play Billing</td><td>Only if you purchase Premium</td><td>The purchase itself. We never see your card details.</td></tr>
+        </table>
+      </div>
+      <p>These providers process data on our instructions and are not permitted to use it for their own purposes. Because our server and database are hosted in Singapore, backed-up data is stored outside the Philippines.</p>
+
+      <h3>6. Security</h3>
+      <ul>
+        <li>All network traffic uses HTTPS.</li>
+        <li>Your owner password is stored only as a salted PBKDF2 hash.</li>
+        <li>Sign-in tokens and Premium status are kept in Android's encrypted storage.</li>
+        <li>Optional app lock uses your fingerprint, face or screen lock.</li>
+        <li>Credentials are excluded from Android's automatic cloud backup.</li>
+      </ul>
+      <p>No system is perfectly secure. If your phone is lost or shared, anyone who can unlock it may be able to open your ledger — enabling app lock is the best protection available in the app.</p>
+
+      <h3>7. How long data is kept</h3>
+      <p>Data on your phone stays until you delete it or uninstall the app. Uninstalling removes the local ledger permanently. Backed-up data is kept until you delete your cloud account.</p>
+
+      <h3>8. Your rights</h3>
+      <p>Under the Data Privacy Act of 2012 you may ask to access, correct or delete personal information we hold about you, object to its processing, or obtain a copy. The in-app tools let you do most of this yourself. If you believe your rights have been violated, you may complain to the National Privacy Commission (<a href="https://www.privacy.gov.ph" target="_blank" rel="noopener">privacy.gov.ph</a>).</p>
+
+      <h3>9. Children</h3>
+      <p>Lista+ is a business record-keeping tool intended for shop owners and is not directed at children. We do not knowingly collect personal information from children.</p>
+
+      <h3>10. Contact</h3>
+      <p><a href="mailto:devteam0309@gmail.com">devteam0309@gmail.com</a> · Lista+ · Jorres · Philippines</p>
+      <p class="date">Canonical copy: <a href="https://devteam0309.github.io/lista-plus-legal/privacy.html" target="_blank" rel="noopener">devteam0309.github.io/lista-plus-legal/privacy.html</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="m-data" role="dialog" aria-modal="true" aria-labelledby="h-data">
+  <div class="sheet">
+    <div class="accent"></div>
+    <button class="closex" type="button" data-close aria-label="Close">×</button>
+    <div class="sheet-in">
+      <h2 id="h-data">Data Collection Statement</h2>
+      <p class="date">A plain summary of what Lista+ collects. The full detail is in the Privacy Policy.</p>
+
+      <div class="callout">
+        <strong>If you never sign in, Lista+ collects nothing.</strong> The app is fully
+        usable with no account and no internet. Collection begins only when you choose to
+        turn on cloud backup.
+      </div>
+
+      <h3>Collected only when cloud backup is on</h3>
+      <div class="scroll">
+        <table>
+          <tr><th>Category</th><th>Data</th><th>Why</th></tr>
+          <tr><td>Personal info</td><td>Customer names and nicknames</td><td>So a restored ledger still says who owes what</td></tr>
+          <tr><td>Personal info</td><td>Customer phone numbers and addresses</td><td>They are part of the customer record you entered</td></tr>
+          <tr><td>Personal info</td><td>Your email address and Google account identifier</td><td>To know which backup is yours</td></tr>
+          <tr><td>Financial info</td><td>Credit transactions, payments and balances</td><td>They are the ledger itself</td></tr>
+          <tr><td>Purchase status</td><td>Whether your account has Premium</td><td>To restore entitlement on a new phone</td></tr>
+        </table>
+      </div>
+
+      <h3>Never collected</h3>
+      <ul>
+        <li>Advertising identifiers — there are no ads</li>
+        <li>Analytics or usage data — the app contains no analytics software</li>
+        <li>Crash logs</li>
+        <li>Location, contacts, messages, call log, camera, microphone or files</li>
+        <li>Your fingerprint or face data</li>
+        <li>Your local owner password — not even as a hash</li>
+      </ul>
+
+      <h3>Sharing</h3>
+      <p>Your data is <strong>never sold</strong> and never shared with third parties for their own purposes. It is processed only by the providers that run the service (Google Sign-In, our Render-hosted server, MongoDB Atlas, and Google Play Billing if you buy Premium), on our instructions.</p>
+
+      <h3>Handling</h3>
+      <ul>
+        <li>Encrypted in transit (HTTPS)</li>
+        <li>You can delete everything at any time — see <em>Deleting Your Account</em></li>
+        <li>Backed-up data is stored in Singapore, outside the Philippines</li>
+      </ul>
+
+      <div class="callout warn">
+        <strong>A note about your customers.</strong> Most of the personal information here
+        belongs to <em>your customers</em>, not to you. You are the one who decides to record
+        it, which under the Philippine Data Privacy Act makes you responsible for telling them
+        and for honouring their requests to correct or remove it.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="m-delete" role="dialog" aria-modal="true" aria-labelledby="h-delete">
+  <div class="sheet">
+    <div class="accent"></div>
+    <button class="closex" type="button" data-close aria-label="Close">×</button>
+    <div class="sheet-in">
+      <h2 id="h-delete">Deleting Your Account &amp; Data</h2>
+      <p class="date">Last updated 26 August 2026</p>
+
+      <div class="callout">
+        <strong>Important distinction.</strong> Lista+ keeps your ledger on your phone and
+        works without an account. Deleting your <em>cloud account</em> removes the backup copy
+        on our servers. <strong>It does not delete the ledger on your phone</strong> — your
+        records stay exactly where they are and the app keeps working offline.
+      </div>
+
+      <h3>Option 1 — Delete it yourself in the app</h3>
+      <p>Immediate, with no waiting.</p>
+      <ol>
+        <li>Open <strong>Lista+</strong></li>
+        <li>Go to the <strong>More</strong> tab</li>
+        <li>Find the <strong>Account</strong> section (visible when you are signed in)</li>
+        <li>Tap <strong>Delete cloud account</strong></li>
+        <li>Confirm with <strong>Delete forever</strong></li>
+      </ol>
+      <p>Your account and backed-up data are erased right away and you are signed out. Any other device still signed in is signed out the next time it tries to sync.</p>
+
+      <h3>Option 2 — Request deletion by email</h3>
+      <p>Use this if you can no longer open the app, lost the device, or cannot sign in.</p>
+      <p>Email <a href="mailto:devteam0309@gmail.com?subject=Delete%20my%20Lista%2B%20account"><strong>devteam0309@gmail.com</strong></a> from <strong>the same Google address you used to sign in</strong>, with the subject <strong>"Delete my Lista+ account"</strong>. We use the sending address to confirm the request is yours, so a request from a different address cannot be honoured. Requests are completed within <strong>30 days</strong>, and normally much sooner.</p>
+
+      <h3>What is deleted</h3>
+      <ul>
+        <li>Your account record, including the email address and Google account identifier</li>
+        <li>All backed-up customers — names, nicknames, phone numbers, addresses, credit limits and notes</li>
+        <li>All backed-up products</li>
+        <li>All backed-up credit transactions and their line items</li>
+        <li>All backed-up payments and their allocations</li>
+        <li>Your cloud Premium status</li>
+      </ul>
+      <p>Deletion is immediate and permanent. We keep no archived copy, and deleted data cannot be restored afterwards — by you or by us.</p>
+
+      <h3>What is not deleted</h3>
+      <ul>
+        <li><strong>The ledger on your phone.</strong> It remains fully intact and usable offline.</li>
+        <li><strong>A Premium purchase made through Google Play.</strong> You paid for that and it is not part of what you asked to delete, so it survives and can be restored.</li>
+        <li><strong>Records of a purchase held by Google Play</strong>, which Google keeps under its own policies.</li>
+      </ul>
+
+      <div class="callout warn">
+        <strong>To delete the ledger on your phone as well</strong>, uninstall Lista+ (or use
+        Android <strong>Settings → Apps → Lista+ → Storage → Clear data</strong>). This is
+        irreversible: if you have not backed up, those records cannot be recovered by anyone,
+        including us. Delete your cloud account <em>first</em> if you want both gone.
+      </div>
+
+      <h3>Removing one customer instead</h3>
+      <p>If you only want to remove one person's information, you do not need to delete your account. Open that customer in the app and delete them — this removes their details along with their credit and payment history, on your phone and from the backup. This is the route to use when a customer asks you to remove their information.</p>
+      <p class="date">Canonical copy: <a href="https://devteam0309.github.io/lista-plus-legal/delete-account.html" target="_blank" rel="noopener">devteam0309.github.io/lista-plus-legal/delete-account.html</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="m-legal" role="dialog" aria-modal="true" aria-labelledby="h-legal">
+  <div class="sheet">
+    <div class="accent"></div>
+    <button class="closex" type="button" data-close aria-label="Close">×</button>
+    <div class="sheet-in">
+      <h2 id="h-legal">Legal &amp; Terms of Use</h2>
+      <p class="date">Last updated 2 September 2026</p>
+
+      <div class="callout warn">
+        <strong>Lista+ is not a lender.</strong> It is a record-keeping tool for credit a
+        store has <em>already</em> extended to its own customers — a notebook, in digital
+        form. Lista+ does not lend money, does not offer credit, does not process payments
+        between you and your customers, and is not a financial service or institution.
+      </div>
+
+      <h3>1. What you may use it for</h3>
+      <p>Lista+ is provided for keeping your own business records. You may use it free of charge for that purpose. You may not use it to break the law, to harass anyone, or to store information you have no right to hold.</p>
+
+      <h3>2. Your records are yours</h3>
+      <p>The ledger you build belongs to you. We claim no ownership of it. It is stored on your own device, and copied to our servers only if you choose to turn on cloud backup.</p>
+
+      <h3>3. Your responsibilities</h3>
+      <ul>
+        <li><strong>Accuracy.</strong> You enter the data, so you are responsible for whether it is correct. Lista+ computes balances from what you record; it cannot know about a payment you never entered.</li>
+        <li><strong>Your customers' information.</strong> You decide to record other people's names, numbers and addresses, which under the Philippine Data Privacy Act of 2012 makes you responsible for handling it properly.</li>
+        <li><strong>Your device.</strong> Anyone who can unlock your phone may be able to open your ledger. The optional app lock exists for this reason.</li>
+        <li><strong>Your backups.</strong> If you do not enable cloud backup and you lose or wipe the phone, the ledger cannot be recovered by anyone, including us.</li>
+      </ul>
+
+      <h3>4. Premium and payment</h3>
+      <p>Cloud backup is an optional paid feature, sold as a one-time purchase through Google Play, not a subscription. Purchases, refunds and payment methods are handled by Google under its own terms; we never see your card details. Refunds are governed by Google Play's refund policy.</p>
+
+      <h3>5. Availability</h3>
+      <p>The app works offline by design and does not depend on us being online. The cloud backup service is provided on a best-effort basis and may be unavailable at times for maintenance or reasons outside our control. Cloud backup is a convenience, not a guarantee — keep in mind that your phone holds the authoritative copy.</p>
+
+      <h3>6. No warranty</h3>
+      <p>Lista+ is provided "as is", without warranties of any kind, express or implied. We do not warrant that it will be error-free or uninterrupted. To the fullest extent permitted by law, we are not liable for any loss of data, loss of profit, or business loss arising from use of the app. Nothing here limits any liability that cannot be limited under Philippine law.</p>
+
+      <h3>7. Changes</h3>
+      <p>These terms and the Privacy Policy may change as the app develops. The "last updated" date above changes with them, and significant changes will be noted in the app or on this page.</p>
+
+      <h3>8. Governing law</h3>
+      <p>These terms are governed by the laws of the Republic of the Philippines.</p>
+
+      <h3>9. Contact</h3>
+      <p><a href="mailto:devteam0309@gmail.com">devteam0309@gmail.com</a> · Lista+ · Jorres · Philippines</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var open = null;
+  var lastFocus = null;
+
+  function show(id) {
+    var m = document.getElementById(id);
+    if (!m) return;
+    lastFocus = document.activeElement;
+    m.classList.add('show');
+    document.body.classList.add('locked');
+    open = m;
+    // Move focus into the dialog so keyboard and screen-reader users land inside it.
+    var close = m.querySelector('[data-close]');
+    if (close) close.focus();
+  }
+
+  function hide() {
+    if (!open) return;
+    open.classList.remove('show');
+    open.scrollTop = 0;
+    document.body.classList.remove('locked');
+    open = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.addEventListener('click', function (e) {
+    var opener = e.target.closest('[data-modal]');
+    if (opener) { show(opener.getAttribute('data-modal')); return; }
+    if (e.target.closest('[data-close]')) { hide(); return; }
+    // A click on the backdrop itself, not on the sheet, closes.
+    if (open && e.target === open) hide();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && open) hide();
+  });
+
+  // Allow deep links such as index.html#privacy to open a panel directly,
+  // which is what an external link to a policy needs to do.
+  var map = { privacy: 'm-privacy', data: 'm-data', delete: 'm-delete', legal: 'm-legal' };
+  function fromHash() {
+    var key = location.hash.replace('#', '');
+    if (map[key]) show(map[key]);
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>
