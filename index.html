@@ -89,7 +89,26 @@
   .btn:hover{filter:brightness(1.08)}
   .btn:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
   .btn.ghost{background:transparent;color:var(--emerald)}
-  .cta-help{color:var(--muted);font-size:14.5px;max-width:52ch;margin:0 auto 26px}
+  .cta-help{color:var(--muted);font-size:14.5px;max-width:52ch;margin:0 auto 14px}
+
+  /* A copyable address, because mailto: only opens a mail client when the
+     browser has one registered — on desktop Chrome it usually does nothing. */
+  .mailrow{
+    display:inline-flex;align-items:stretch;border:1px solid var(--rule);
+    background:var(--panel);margin-bottom:26px;max-width:100%;
+  }
+  .mailrow code{
+    padding:9px 14px;font-size:14.5px;color:var(--ink);
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    white-space:nowrap;overflow-x:auto;
+  }
+  .mailrow button{
+    border:0;border-left:1px solid var(--rule);background:var(--sunken);
+    color:var(--emerald);font:inherit;font-size:13.5px;font-weight:600;
+    padding:9px 15px;cursor:pointer;white-space:nowrap;
+  }
+  .mailrow button:hover{background:var(--emerald-soft)}
+  .mailrow button:focus-visible{outline:2px solid var(--emerald);outline-offset:-2px}
 
   .join{
     border:1px solid var(--rule);border-left:3px solid var(--emerald);
@@ -200,7 +219,8 @@
       <span class="pill">No tracking</span>
     </div>
     <div class="cta">
-      <a class="btn" href="mailto:devteam0309@gmail.com?subject=Join%20the%20Lista%2B%20test&amp;body=Hi!%20I%27d%20like%20to%20try%20Lista%2B.%0A%0AThe%20Google%20account%20on%20my%20phone%20is%3A%0A%0AMy%20store%20(optional)%3A%0A">
+      <a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=devteam0309@gmail.com&amp;su=Join%20the%20Lista%2B%20test&amp;body=Hi!%20I%27d%20like%20to%20try%20Lista%2B.%0A%0AThe%20Google%20account%20on%20my%20phone%20is%3A%0A%0AMy%20store%20(optional)%3A%0A"
+         target="_blank" rel="noopener">
         Ask to join the test
       </a>
       <a class="btn ghost" href="https://play.google.com/apps/testing/com.jorres.listaplus/join">
@@ -209,9 +229,13 @@
     </div>
     <p class="cta-help">
       Testing is invite-only for now. Send us the Google address you use on your phone and
-      we will add you to the list — then the second link opens the app in the Play Store.
+      we will add you to the list — then the second button opens Lista+ in the Play Store.
       It is free, and there is nothing to pay at any point.
     </p>
+    <div class="mailrow">
+      <code>devteam0309@gmail.com</code>
+      <button type="button" data-copy="devteam0309@gmail.com">Copy</button>
+    </div>
   </div>
 
   <section id="features">
@@ -297,12 +321,17 @@
         gets built next.
       </p>
       <div class="cta">
-        <a class="btn" href="mailto:devteam0309@gmail.com?subject=Join%20the%20Lista%2B%20test&amp;body=Hi!%20I%27d%20like%20to%20try%20Lista%2B.%0A%0AThe%20Google%20account%20on%20my%20phone%20is%3A%0A%0AMy%20store%20(optional)%3A%0A">
+        <a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=devteam0309@gmail.com&amp;su=Join%20the%20Lista%2B%20test&amp;body=Hi!%20I%27d%20like%20to%20try%20Lista%2B.%0A%0AThe%20Google%20account%20on%20my%20phone%20is%3A%0A%0AMy%20store%20(optional)%3A%0A"
+           target="_blank" rel="noopener">
           Ask to join the test
         </a>
         <a class="btn ghost" href="https://play.google.com/apps/testing/com.jorres.listaplus/join">
           Already added? Open Play
         </a>
+      </div>
+      <div class="mailrow">
+        <code>devteam0309@gmail.com</code>
+        <button type="button" data-copy="devteam0309@gmail.com">Copy</button>
       </div>
     </div>
   </section>
@@ -618,6 +647,9 @@
   }
 
   document.addEventListener('click', function (e) {
+    var copier = e.target.closest('[data-copy]');
+    if (copier) { copyAddress(copier); return; }
+
     var opener = e.target.closest('[data-modal]');
     if (opener) { show(opener.getAttribute('data-modal')); return; }
     if (e.target.closest('[data-close]')) { hide(); return; }
@@ -628,6 +660,37 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && open) hide();
   });
+
+  // Clipboard access can be refused (older browsers, denied permission), so
+  // fall back to selecting the address — the reader can still copy it, and it
+  // is short enough to simply read off the screen.
+  function copyAddress(btn) {
+    var text = btn.getAttribute('data-copy');
+    var label = btn.textContent;
+    function flash(msg) {
+      btn.textContent = msg;
+      setTimeout(function () { btn.textContent = label; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function () { flash('Copied'); },
+        function () { selectAddress(btn); flash('Select it'); }
+      );
+    } else {
+      selectAddress(btn);
+      flash('Select it');
+    }
+  }
+
+  function selectAddress(btn) {
+    var code = btn.parentNode.querySelector('code');
+    if (!code) return;
+    var range = document.createRange();
+    range.selectNodeContents(code);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
 
   // Allow deep links such as index.html#privacy to open a panel directly,
   // which is what an external link to a policy needs to do.
