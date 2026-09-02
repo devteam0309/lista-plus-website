@@ -15,6 +15,9 @@
     --bg:#ffffff; --panel:#ffffff; --sunken:#f8faf9;
     --text:#0f172a; --muted:#52616f; --rule:#e2e8f0;
     --emerald:#047857; --emerald-soft:#ecfdf5; --amber:#b45309; --amber-soft:#fef3c7;
+    /* Text that sits ON the emerald fill. Flips with the theme because the
+       accent itself lightens in dark mode — white on it would be unreadable. */
+    --on-emerald:#ffffff;
     --shadow:0 1px 2px rgba(15,23,42,.04);
   }
   @media (prefers-color-scheme: dark){
@@ -22,6 +25,7 @@
       --bg:#0b1220; --panel:#0f172a; --sunken:#111c2e;
       --text:#e6edf5; --muted:#9aa8b8; --rule:#1e293b;
       --emerald:#34d399; --emerald-soft:#0d2a22; --amber:#fbbf24; --amber-soft:#2a2110;
+      --on-emerald:#06231b;
       --shadow:none;
     }
   }
@@ -75,6 +79,24 @@
     display:inline-block;border:1px solid var(--rule);border-left:3px solid var(--amber);
     background:var(--panel);padding:12px 18px;color:var(--muted);font-size:15px;text-align:left;
   }
+
+  .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-bottom:16px}
+  .btn{
+    display:inline-block;padding:14px 28px;font-size:16px;font-weight:700;
+    text-decoration:none;border:1px solid var(--emerald);
+    background:var(--emerald);color:var(--on-emerald);
+  }
+  .btn:hover{filter:brightness(1.08)}
+  .btn:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+  .btn.ghost{background:transparent;color:var(--emerald)}
+  .cta-help{color:var(--muted);font-size:14.5px;max-width:52ch;margin:0 auto 26px}
+
+  .join{
+    border:1px solid var(--rule);border-left:3px solid var(--emerald);
+    background:var(--panel);padding:26px;text-align:center;margin-top:34px;
+  }
+  .join h2{margin-bottom:8px}
+  .join p{color:var(--muted);max-width:56ch;margin:0 auto 20px}
 
   section{padding:56px 0;border-top:1px solid var(--rule)}
   h2{font-size:clamp(21px,2.8vw,27px);margin:0 0 8px;letter-spacing:-.3px}
@@ -177,9 +199,17 @@
       <span class="pill">No ads</span>
       <span class="pill">No tracking</span>
     </div>
-    <p class="note">
-      <strong>Coming soon to Google Play.</strong> Lista+ is in testing right now.
-      Want to try it early and help shape it? <a href="mailto:devteam0309@gmail.com?subject=Lista%2B%20tester">Email us</a>.
+    <div class="cta">
+      <a class="btn" href="https://play.google.com/apps/testing/com.jorres.listaplus/join">
+        Join the test on Google Play
+      </a>
+      <a class="btn ghost" href="mailto:devteam0309@gmail.com?subject=Lista%2B%20tester">
+        Or email us
+      </a>
+    </div>
+    <p class="cta-help">
+      Open the link on the phone you will use, signed in to the same Google account.
+      Accept the invitation, then install Lista+ from the Play Store.
     </p>
   </div>
 
@@ -255,6 +285,19 @@
           own customers. Lista+ does not lend money, does not process payments between you
           and your suki, and is not a financial service.
         </p>
+      </div>
+    </div>
+
+    <div class="wrap join">
+      <h2>Be one of the first to use it</h2>
+      <p>
+        Lista+ is in open testing. Join and you get the full app free, and your feedback
+        shapes what gets built next.
+      </p>
+      <div class="cta">
+        <a class="btn" href="https://play.google.com/apps/testing/com.jorres.listaplus/join">
+          Join the test on Google Play
+        </a>
       </div>
     </div>
   </section>
